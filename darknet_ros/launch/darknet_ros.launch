@@ -16,6 +16,7 @@
   <!-- Load parameters -->
   <rosparam command="load" ns="darknet_ros" file="$(arg ros_param_file)"/>
   <rosparam command="load" ns="darknet_ros" file="$(arg network_param_file)"/>
+  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/perse.yaml"/>
 
   <!-- Start darknet and ros wrapper -->
   <node pkg="darknet_ros" type="darknet_ros" name="darknet_ros" output="screen" launch-prefix="$(arg launch_prefix)">
