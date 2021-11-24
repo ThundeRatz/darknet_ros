@@ -25,6 +25,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/Header.h>
+#include <std_msgs/Bool.h>
 
 // OpenCv
 #include <cv_bridge/cv_bridge.h>
@@ -87,6 +88,15 @@ class YoloObjectDetector {
    * Destructor.
    */
   ~YoloObjectDetector();
+
+  // mudanças da thunder
+
+  ros::Subscriber enableSubscriber;
+  void enableCallback(std_msgs::Bool msg);
+  bool enable_vision = false;
+
+  // mudanças da thunder
+
 
  private:
   /*!
@@ -211,6 +221,9 @@ class YoloObjectDetector {
 
   int actionId_;
   boost::shared_mutex mutexActionStatus_;
+
+
+
 
   // double getWallTime();
 

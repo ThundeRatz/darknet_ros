@@ -140,6 +140,10 @@ void YoloObjectDetector::init() {
   nodeHandle_.param("publishers/detection_image/latch", detectionImageLatch, true);
 
   imageSubscriber_ = imageTransport_.subscribe(cameraTopicName, cameraQueueSize, &YoloObjectDetector::cameraCallback, this);
+
+  int enableQueueSize = cameraQueueSize; //improviso isso aqui // ok!... como vamos testar isso?
+  enableSubscriber = nodeHandle_.subscribe("perse/control_vision", enableQueueSize, &YoloObjectDetector::enableCallback, this);
+  
   objectPublisher_ =
       nodeHandle_.advertise<darknet_ros_msgs::ObjectCount>(objectDetectorTopicName, objectDetectorQueueSize, objectDetectorLatch);
   boundingBoxesPublisher_ =
@@ -192,6 +196,14 @@ void YoloObjectDetector::cameraCallback(const sensor_msgs::ImageConstPtr& msg) {
     frameWidth_ = cam_image->image.size().width;
     frameHeight_ = cam_image->image.size().height;
   }
+  return;
+}
+
+void YoloObjectDetector::enableCallback(const std_msgs::Bool& header) {
+  ROS_DEBUG("[YoloObjectDetector] Enable/Disable revceived.");
+
+  enable_vision = header.data;
+
   return;
 }
 
@@ -418,7 +430,8 @@ void* YoloObjectDetector::displayLoop(void* ptr) {
 
 void* YoloObjectDetector::detectLoop(void* ptr) {
   while (1) {
-    detectInThread();
+    std::cout<< "não to fazenod nada" << std::endl;
+    //detectInThread();
   }
 }
 
@@ -441,13 +454,17 @@ void YoloObjectDetector::setupNetwork(char* cfgfile, char* weightfile, char* dat
 
 void YoloObjectDetector::yolo() {
   const auto wait_duration = std::chrono::milliseconds(2000);
-  while (!getImageStatus()) {
+
+  while (!enable_vision || !getImageStatus()) {
+
     printf("Waiting for image.\n");
     if (!isNodeRunning()) {
       return;
     }
     std::this_thread::sleep_for(wait_duration);
   }
+
+  printf("Hehe, passei... \n");
 
   std::thread detect_thread;
   std::thread fetch_thread;
