@@ -25,7 +25,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/Header.h>
-#include <std_msgs/Bool.h>
+#include <std_msgs/Int32.h>
 
 // OpenCv
 #include <cv_bridge/cv_bridge.h>
@@ -92,7 +92,7 @@ class YoloObjectDetector {
   // mudanças da thunder
 
   ros::Subscriber enableSubscriber;
-  void enableCallback(std_msgs::Bool msg);
+  void enableCallback(std_msgs::Int32 msg);
   bool enable_vision = false;
 
   // mudanças da thunder

@@ -142,7 +142,7 @@ void YoloObjectDetector::init() {
   imageSubscriber_ = imageTransport_.subscribe(cameraTopicName, cameraQueueSize, &YoloObjectDetector::cameraCallback, this);
 
   int enableQueueSize = cameraQueueSize; //improviso isso aqui // ok!... como vamos testar isso?
-  enableSubscriber = nodeHandle_.subscribe("perse/control_vision", enableQueueSize, &YoloObjectDetector::enableCallback, this);
+  enableSubscriber = nodeHandle_.subscribe("/perse/control_vision", enableQueueSize, &YoloObjectDetector::enableCallback, this);
   
   objectPublisher_ =
       nodeHandle_.advertise<darknet_ros_msgs::ObjectCount>(objectDetectorTopicName, objectDetectorQueueSize, objectDetectorLatch);
@@ -199,10 +199,11 @@ void YoloObjectDetector::cameraCallback(const sensor_msgs::ImageConstPtr& msg) {
   return;
 }
 
-void YoloObjectDetector::enableCallback(const std_msgs::Bool& header) {
+void YoloObjectDetector::enableCallback(std_msgs::Int32 msg) {
   ROS_DEBUG("[YoloObjectDetector] Enable/Disable revceived.");
-
-  enable_vision = header.data;
+  
+  printf("Recebidos meninas! %d", msg.data);
+  enable_vision = msg.data;
 
   return;
 }
@@ -455,8 +456,8 @@ void YoloObjectDetector::setupNetwork(char* cfgfile, char* weightfile, char* dat
 void YoloObjectDetector::yolo() {
   const auto wait_duration = std::chrono::milliseconds(2000);
 
-  while (!enable_vision || !getImageStatus()) {
-
+  while (enable_vision == 0 || !getImageStatus()) {
+    printf("%d\n", enable_vision);
     printf("Waiting for image.\n");
     if (!isNodeRunning()) {
       return;
