@@ -1,7 +1,7 @@
 darknet_ros:
   ros__parameters:
     yolo_model:
-    
+
       config_file:
         name: yolov2-tiny-voc.cfg
       weight_file:
@@ -30,4 +30,3 @@ darknet_ros:
           - sofa
           - train
           - tvmonitor
-    

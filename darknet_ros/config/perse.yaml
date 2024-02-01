@@ -1,0 +1,13 @@
+darknet_ros:
+  ros__parameters:
+    yolo_model:
+
+      config_file:
+        name: yolov1-tiny-mod.cfg
+      weight_file:
+        name: tiny-yolo-mod_final.weights
+      threshold:
+        value: 0.6
+      detection_classes:
+        names:
+          - cone
