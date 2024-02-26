@@ -3,9 +3,9 @@ darknet_ros:
     yolo_model:
 
       config_file:
-        name: yolov1-tiny-mod.cfg
+        name: yolov3-tiny.cfg
       weight_file:
-        name: tiny-yolo-mod_final.weights
+        name: yolov3-tiny.backup
       threshold:
         value: 0.6
       detection_classes:
